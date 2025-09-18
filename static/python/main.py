@@ -1,6 +1,8 @@
 import requests  # Для запросов к API карт (используем OpenStreetMap Nominatim для геокодирования)
 import math  # Для простых расчётов
 
+from bs4 import BeautifulSoup
+
 
 # Функция для геокодирования (преобразование адреса в координаты)
 def geocode(location):
@@ -32,3 +34,44 @@ def recommend_speed(distance, vehicle_type):
         return 60, distance / 60 * 8
     else:
         return 90, distance / 90 * 7
+
+
+# Функция для получения и парсинга цены
+def get_fuel_price(fuel_class, soup: BeautifulSoup):
+    fuel_card = soup.find('div', class_=fuel_class)
+    if fuel_card:
+        price_span = fuel_card.find('span', itemprop='price')
+        if price_span:
+            return float(price_span.get_text(strip=True).replace('₽', ''))
+    return None  # Если цена не найдена
+
+
+# Основная функция
+def get_gas_prices(vehicle_type):
+
+    url = "https://fuelprices.ru/"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    price = None
+
+    if vehicle_type == "Легковой":
+
+        # Получаем цены для АИ-92, АИ-95, АИ-98
+        gas_92_price = get_fuel_price('fuel-card border-ai80', soup)
+        gas_95_price = get_fuel_price('fuel-card border-ai92', soup)
+        gas_98_price = get_fuel_price('fuel-card border-ai95', soup)
+
+        if None not in [gas_92_price, gas_95_price, gas_98_price]:
+            # Вычисляем среднюю цену
+            price = (gas_92_price + gas_95_price + gas_98_price) / 3
+
+        else:
+            price = None
+
+    else:
+        # Получаем цену дизельного топлива
+        price = get_fuel_price('fuel-card border-diesel', soup)
+
+    return price
+
