@@ -47,7 +47,7 @@ def get_fuel_price(fuel_class, soup: BeautifulSoup):
 
 
 # Основная функция
-def get_gas_prices(vehicle_type):
+def get_gas_prices(vehicle_type, gas_amount):
 
     url = "https://fuelprices.ru/"
     response = requests.get(url)
@@ -73,5 +73,5 @@ def get_gas_prices(vehicle_type):
         # Получаем цену дизельного топлива
         price = get_fuel_price('fuel-card border-diesel', soup)
 
-    return price
+    return price * gas_amount
 
