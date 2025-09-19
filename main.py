@@ -4,7 +4,7 @@
 import folium  # Для генерации интерактивных карт
 
 from flask import Flask, render_template, request, jsonify
-from static.python.main import haversine, geocode, recommend_speed
+from static.python.main import haversine, geocode, recommend_speed, get_gas_prices
 
 app = Flask(__name__)
 
@@ -30,11 +30,15 @@ def index():
 
         # Проверка габаритов (упрощённо: если ширина > 3м или высота > 4м, предупредить)
         size_warning = ""
+
         if width > 3 or height > 4:
             size_warning = "Внимание: Габариты могут не пройти под мостами или в туннелях!"
 
         # Рекомендация скорости и расхода
         speed, fuel = recommend_speed(distance, vehicle_type)
+
+        # Цена за топливо
+        gas_price = get_gas_prices(vehicle_type, fuel)
 
         # Генерация карты с маршрутом (простая линия)
         m = folium.Map(location=[start_lat, start_lon], zoom_start=6)
@@ -45,7 +49,7 @@ def index():
         map_html = m._repr_html_()
 
         return render_template('result.html', distance=round(distance, 2), speed=speed, fuel=round(fuel, 2),
-                               size_warning=size_warning, map_html=map_html)
+                               size_warning=size_warning, map_html=map_html, gas_price = gas_price)
 
     return render_template('index.html')
 

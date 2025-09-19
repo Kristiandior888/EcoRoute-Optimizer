@@ -55,7 +55,7 @@ def get_gas_prices(vehicle_type, gas_amount):
 
     price = None
 
-    if vehicle_type == "Легковой":
+    if vehicle_type == "car":
 
         # Получаем цены для АИ-92, АИ-95, АИ-98
         gas_92_price = get_fuel_price('fuel-card border-ai80', soup)
@@ -73,5 +73,5 @@ def get_gas_prices(vehicle_type, gas_amount):
         # Получаем цену дизельного топлива
         price = get_fuel_price('fuel-card border-diesel', soup)
 
-    return price * gas_amount
+    return round(price * gas_amount)
 
