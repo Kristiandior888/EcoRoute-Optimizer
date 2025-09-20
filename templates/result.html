@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Результат оптимизации - EcoRoute{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="text-center mb-4">
+            <h1 class="header-title">Результат оптимизации</h1>
+            <p class="text-white">Ваш маршрут успешно оптимизирован для максимальной эффективности</p>
+        </div>
+
+        <div class="glass-container">
+            {% if size_warning %}
+            <div class="warning-alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Внимание:</strong> {{ size_warning }}
+            </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="result-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon"><i class="fas fa-road"></i></div>
+                            <div>
+                                <p class="stat-value">{{ distance }} км</p>
+                                <p class="stat-label">Расстояние</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="result-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div>
+                                <p class="stat-value">{{ speed }} км/ч</p>
+                                <p class="stat-label">Рекомендуемая скорость</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="result-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon"><i class="fas fa-gas-pump"></i></div>
+                            <div>
+                                <p class="stat-value">{{ fuel }} л</p>
+                                <p class="stat-label">Расход топлива</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карта -->
+            <div id="map">{{ map_html | safe }}</div>
+
+       
+
+            <div class="text-center mt-4">
+                <a href="/" class="btn btn-back">
+                    <i class="fas fa-arrow-left me-2"></i>Назад к расчету
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

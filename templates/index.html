@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}EcoRoute Optimizer{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="text-center mb-5">
+            <h1 class="logo"><i class="fas fa-leaf me-2"></i>Eco<span>Route</span></h1>
+            <p class="header-subtitle">Оптимизация маршрутов для экологичного и экономичного перемещения</p>
+        </div>
+
+        <div class="glass-container">
+            <h2 class="text-center header-title">Оптимизатор маршрута</h2>
+            <p class="text-center text-white mb-4">Введите данные для расчета оптимального маршрута</p>
+
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label"><i class="fas fa-map-marker-alt me-2"></i>Текущая точка</label>
+                    <input type="text" name="start" class="form-control" placeholder="Например, Москва" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><i class="fas fa-flag me-2"></i>Конечная точка</label>
+                    <input type="text" name="end" class="form-control" placeholder="Например, Санкт-Петербург" required>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><i class="fas fa-arrows-alt-h me-2"></i>Ширина (м)</label>
+                        <input type="number" name="width" class="form-control" placeholder="Ширина транспорта" step="0.1" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><i class="fas fa-arrows-alt-v me-2"></i>Высота (м)</label>
+                        <input type="number" name="height" class="form-control" placeholder="Высота транспорта" step="0.1" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label"><i class="fas fa-car me-2"></i>Тип транспорта</label>
+                    <select name="vehicle_type" class="form-control">
+                        <option value="truck">Грузовик</option>
+                        <option value="bus">Автобус (общественный)</option>
+                        <option value="car">Легковое авто</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-route me-2"></i>Оптимизировать маршрут
+                </button>
+            </form>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="feature-card floating-element">
+                    <div class="feature-icon"><i class="fas fa-gas-pump"></i></div>
+                    <h4 class="feature-title">Экономия топлива</h4>
+                    <p class="feature-text">До 25% экономии топлива за счет оптимизации маршрута</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card floating-element" style="animation-delay: 0.5s;">
+                    <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                    <h4 class="feature-title">Экологичность</h4>
+                    <p class="feature-text">Снижение выбросов CO2 на 15-30%</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card floating-element" style="animation-delay: 1s;">
+                    <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                    <h4 class="feature-title">Экономия времени</h4>
+                    <p class="feature-text">Оптимальные маршруты экономят до 20% времени</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
