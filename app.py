@@ -1,12 +1,13 @@
-# EcoRoute Optimizer - Объединенная версия (исправленная)
 import folium
+import math
+import requests
+
 from flask import Flask, render_template, request
 from static.python.main import geocode, recommend_speed, get_gas_prices
 from static.python.osrm import get_route_osrm
 from static.python.driver_schedule import plan_driver_schedule
-import requests
 from datetime import timedelta
-import math
+
 
 app = Flask(__name__)
 
