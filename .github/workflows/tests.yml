@@ -1,0 +1,33 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps firefox
+
+      - name: Start app
+          run: nohup python app.py > app.log 2>&1 &
+
+      - name: Wait for app
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:5000 > /dev/null && exit 0
+            sleep 1
+          done
+          echo "App did not start"; cat app.log; exit 1
+
+      - name: Run tests
+        run: pytest --cov --cov-branch
