@@ -15,7 +15,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt pytest-cov pytest-playwright
+          pip install -r requirements.txt 
           playwright install --with-deps firefox
 
       - name: Start app
@@ -30,4 +30,4 @@ jobs:
           echo "App did not start"; cat app.log; exit 1
 
       - name: Run tests
-        run: pytest --cov --cov-branch
+        run: pytest 
