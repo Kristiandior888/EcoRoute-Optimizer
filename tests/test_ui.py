@@ -6,6 +6,12 @@ from playwright.sync_api import sync_playwright
 
 @pytest.fixture()
 def page():
+    """
+    Открывает главную страницу приложения в Firefox.
+
+    Yields:
+        Страница Playwright с загруженным http://localhost:5000.
+    """
     with sync_playwright() as playwright:
         browser = playwright.firefox.launch()
         context = browser.new_context()
@@ -15,6 +21,15 @@ def page():
 
 @pytest.fixture()
 def filled_form(page):
+    """
+    Заполняет форму маршрута и отправляет её.
+
+    Вводит города Курган и Москва, габариты 1.8 x 1.5, тип транспорта
+    "Легковое авто" и нажимает кнопку "Оптимизировать маршрут".
+
+    Returns:
+        Страница Playwright после отправки формы.
+    """
     page.locator('input[name="start"]').fill("Курган")
     page.locator('input[name="end"]').fill("Москва")
     page.locator('input[name="width"]').fill("1.8")
@@ -25,6 +40,13 @@ def filled_form(page):
 
 @pytest.fixture()
 def results(filled_form):
+    """
+    Собирает локаторы элементов страницы с результатами расчёта.
+
+    Returns:
+        Словарь локаторов: расстояние, рекомендуемая скорость, расход топлива,
+        цена топлива и кнопка возврата.
+    """
     page = filled_form
 
     page.wait_for_load_state("networkidle")
@@ -38,5 +60,11 @@ def results(filled_form):
 
 
 def test_ui(results):
+    """
+    Проверяет, что после отправки формы на странице видны все элементы результата.
+
+    Args:
+        results: словарь локаторов элементов страницы с результатами.
+    """
     for elem in results.values():
         assert elem.is_visible()
